@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { login } from '../src/services/authService';
+import { login } from '../services/authService';
 import '../styles/Login.css';
 
 const Login = () => {
@@ -13,9 +13,9 @@ const Login = () => {
         e.preventDefault();
         try {
             await login({ email, password });
-            navigate('/');
+            navigate('/dashboard'); // Redirect to a protected route
         } catch (err) {
-            setError('Invalid email or password');
+            setError('Login failed. Please check your credentials and try again.');
         }
     };
 

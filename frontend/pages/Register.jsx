@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { register } from '../src/services/authService';
+import { register } from '../services/authService';
 import '../styles/Register.css';
 
 const Register = () => {
@@ -19,9 +19,9 @@ const Register = () => {
             return;
         }
         try {
-            const response = await register({ name, email, password });
+            await register({ name, email, password });
             setSuccess('Registration successful!');
-            setTimeout(() => navigate('/login'), 2000); // Redirect after 2 seconds
+            setTimeout(() => navigate('/login'), 2000);
         } catch (err) {
             setError('Registration failed. Please try again.');
         }

@@ -3,6 +3,8 @@ import Home from '../pages/Home.jsx';
 import Login from '../pages/Login.jsx';
 import Register from '../pages/Register.jsx';
 import NotFound from '../pages/NotFound.jsx';
+import Dashboard from '../pages/Dashboard.jsx'; // Example protected route
+import PrivateRoute from '../components/PrivateRoute.jsx';
 
 function App() {
   return (
@@ -11,7 +13,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="*" element={<NotFound />} /> {/* 404 page */}
+        <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );
