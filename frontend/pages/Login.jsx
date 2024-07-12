@@ -13,7 +13,7 @@ const Login = () => {
         e.preventDefault();
         try {
             await login({ email, password });
-            navigate('/dashboard'); // Redirect to a protected route
+            navigate('/passwords'); // Redirect to a passwords
         } catch (err) {
             setError('Login failed. Please check your credentials and try again.');
         }

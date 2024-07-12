@@ -36,6 +36,8 @@ app.use(express.json({ limit: '10kb' })); // Body limit is 10
 
 // Routes
 const authRoutes = require('./routes/auth');
+const passwordRoutes = require('./routes/password');
 app.use('/api/auth', authRoutes);
+app.use('/api/password', passwordRoutes);
 
 module.exports = app;
