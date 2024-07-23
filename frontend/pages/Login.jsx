@@ -12,9 +12,12 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await login({ email, password });
-            navigate('/passwords'); // Redirect to a passwords
+            console.log('Attempting to login with:', { email, password });
+            const user = await login({ email, password });
+            console.log('Login successful:', user);
+            navigate('/passwords'); // Redirect to the passwords page
         } catch (err) {
+            console.error('Login failed:', err);
             setError('Login failed. Please check your credentials and try again.');
         }
     };
