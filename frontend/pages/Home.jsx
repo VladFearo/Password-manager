@@ -1,6 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { getCurrentUser } from '../services/authService';
+import { getCurrentUser, logout } from '../services/authService';
+
+const handleClick = () => {
+  logout();
+  window.location.reload();
+}
+
 
 const Home = () => {
   const user = getCurrentUser();
@@ -14,7 +20,7 @@ const Home = () => {
           Welcome!
           <div className="d-flex flex-row gap-1 mt-3">
             <Link to="/passwords" className="btn btn-primary btn-lg">Passwords</Link>
-            <Link to="/logout" className="btn btn-secondary btn-lg">Logout</Link>
+            <button className='btn btn-secondary btn-lg' onClick={handleClick}>Logout</button>
           </div>
         </div>
       ) : (
