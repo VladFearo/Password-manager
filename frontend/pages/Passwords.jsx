@@ -2,49 +2,74 @@ import React, { useState, useEffect } from 'react';
 import { addPassword, getPasswords, updatePassword, deletePassword } from '../services/passwordService';
 import '../styles/Passwords.css';
 
+/**
+ * Passwords component that manages the display and manipulation of passwords.
+ *
+ * @component
+ */
 const Passwords = () => {
-    const [passwords, setPasswords] = useState([]);
-    const [form, setForm] = useState({ website: '', password: '', id: null });
-    const [visiblePasswords, setVisiblePasswords] = useState({});
-    const [showFormPassword, setShowFormPassword] = useState(false);
+    const [passwords, setPasswords] = useState([]); // State for storing passwords
+    const [form, setForm] = useState({ website: '', password: '', id: null }); // State for the form input fields
+    const [visiblePasswords, setVisiblePasswords] = useState({}); // State to manage visibility of passwords
+    const [showFormPassword, setShowFormPassword] = useState(false); // State to manage form password visibility
 
+    // Load passwords when the component mounts
     useEffect(() => {
         loadPasswords();
     }, []);
 
+    /**
+     * Load passwords from the server.
+     */
     const loadPasswords = async () => {
         const data = await getPasswords();
         setPasswords(data);
     };
 
+    /**
+     * Handle form submission for adding or updating passwords.
+     * @param {Object} e - The event object.
+     */
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             if (form.id) {
-                await updatePassword(form);
+                await updatePassword(form); // Update existing password
             } else {
-                await addPassword(form);
+                await addPassword(form); // Add new password
             }
-            resetForm();
-            loadPasswords();
+            resetForm(); // Reset the form
+            loadPasswords(); // Reload passwords
         } catch (error) {
             console.error('Error handling submit:', error.response || error.message || error);
         }
     };
 
+    /**
+     * Handle editing a password by setting the form state.
+     * @param {Object} password - The password object to edit.
+     */
     const handleEdit = (password) => {
         setForm({ website: password.website, password: password.password, id: password._id });
     };
 
+    /**
+     * Handle deleting a password by its ID.
+     * @param {string} id - The ID of the password to delete.
+     */
     const handleDelete = async (id) => {
         try {
             await deletePassword(id);
-            loadPasswords();
+            loadPasswords(); // Reload passwords
         } catch (error) {
             console.error('Error handling delete:', error.response || error.message || error);
         }
     };
 
+    /**
+     * Toggle the visibility of a password.
+     * @param {string} id - The ID of the password to toggle visibility.
+     */
     const togglePasswordVisibility = (id) => {
         setVisiblePasswords((prevState) => ({
             ...prevState,
@@ -52,10 +77,16 @@ const Passwords = () => {
         }));
     };
 
+    /**
+     * Reset the form state to its initial values.
+     */
     const resetForm = () => {
         setForm({ website: '', password: '', id: null });
     };
 
+    /**
+     * Generate a strong random password and set it in the form state.
+     */
     const generateStrongPassword = () => {
         const charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+~`|}{[]:;?><,./-=';
         const length = 16;
@@ -99,7 +130,6 @@ const Passwords = () => {
                     <button type="submit" className="btn btn-success m-2">{form.id ? 'Save' : 'Add'} Password</button>
                     {form.id && <button type="button" className="btn btn-warning m-2" onClick={resetForm}>Cancel</button>}
                 </div>
-
             </form>
             <ul className="list-group">
                 {passwords.map((password) => (

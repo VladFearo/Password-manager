@@ -3,27 +3,36 @@ import { useNavigate } from 'react-router-dom';
 import { register } from '../services/authService';
 import '../styles/Register.css';
 
+/**
+ * Register component that provides a form for user registration.
+ *
+ * @component
+ */
 const Register = () => {
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [error, setError] = useState('');
-    const [success, setSuccess] = useState('');
-    const navigate = useNavigate();
+    const [name, setName] = useState(''); // State for name input
+    const [email, setEmail] = useState(''); // State for email input
+    const [password, setPassword] = useState(''); // State for password input
+    const [confirmPassword, setConfirmPassword] = useState(''); // State for confirm password input
+    const [error, setError] = useState(''); // State for error message
+    const [success, setSuccess] = useState(''); // State for success message
+    const navigate = useNavigate(); // Hook to navigate programmatically
 
+    /**
+     * Handle form submission for registration.
+     * @param {Object} e - The event object.
+     */
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (password !== confirmPassword) {
-            setError('Passwords do not match');
+            setError('Passwords do not match'); // Set error if passwords do not match
             return;
         }
         try {
-            await register({ name, email, password });
-            setSuccess('Registration successful!');
-            setTimeout(() => navigate('/login'), 2000);
+            await register({ name, email, password }); // Attempt to register
+            setSuccess('Registration successful!'); // Set success message
+            setTimeout(() => navigate('/login'), 2000); // Redirect to login page after 2 seconds
         } catch (err) {
-            setError('Registration failed. Please try again.');
+            setError(err.message);
         }
     };
 
@@ -31,8 +40,8 @@ const Register = () => {
         <div className="container d-flex flex-column align-items-center justify-content-center min-vh-100 bg-light">
             <div className="card p-4 shadow">
                 <h2 className="card-title text-center mb-4">Register</h2>
-                {error && <div className="alert alert-danger">{error}</div>}
-                {success && <div className="alert alert-success">{success}</div>}
+                {error && <div className="alert alert-danger">{error}</div>} {/* Display error message if any */}
+                {success && <div className="alert alert-success">{success}</div>} {/* Display success message if any */}
                 <form onSubmit={handleSubmit}>
                     <div className="mb-3">
                         <label htmlFor="name" className="form-label">Name</label>

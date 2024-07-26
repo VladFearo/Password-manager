@@ -2,13 +2,22 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { logout, getCurrentUser } from '../services/authService';
 
+/**
+ * Header component that displays the navigation bar.
+ * It includes links to different pages and a logout button if the user is logged in.
+ *
+ * @component
+ */
 const Header = () => {
-    const navigate = useNavigate();
-    const user = getCurrentUser();
+    const navigate = useNavigate(); // Hook to navigate programmatically
+    const user = getCurrentUser(); // Get the current logged-in user
 
+    /**
+     * Handle logout by calling the logout service and navigating to the login page.
+     */
     const handleLogout = () => {
-        logout();
-        navigate('/login');
+        logout(); // Perform logout
+        navigate('/login'); // Redirect to login page
     };
 
     return (
@@ -29,7 +38,7 @@ const Header = () => {
                                     <a className="nav-link" href="/passwords">Passwords</a>
                                 </li>
                                 <li className="nav-item">
-                                    <button className="nav-link" onClick={handleLogout} >Logout</button>
+                                    <button className="nav-link" onClick={handleLogout}>Logout</button>
                                 </li>
                             </>
                         ) : (

@@ -2,14 +2,21 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { getCurrentUser, logout } from '../services/authService';
 
+/**
+ * Handle logout by calling the logout service and reloading the page.
+ */
 const handleClick = () => {
   logout();
-  window.location.reload();
+  window.location.reload(); // Reload the page to reflect logout state
 }
 
-
+/**
+ * Home component that serves as the landing page.
+ *
+ * @component
+ */
 const Home = () => {
-  const user = getCurrentUser();
+  const user = getCurrentUser(); // Get the current logged-in user
 
   return (
     <div className="container d-flex flex-column align-items-center justify-content-center min-vh-100 bg-light">

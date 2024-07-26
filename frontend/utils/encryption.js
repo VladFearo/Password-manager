@@ -2,11 +2,18 @@ import CryptoJS from 'crypto-js';
 
 const MASTER_KEY = import.meta.env.VITE_MASTER_KEY;
 
+// Check if the master key is defined, if not, log an error and throw an exception
 if (!MASTER_KEY) {
   console.error('MASTER_KEY is not defined');
   throw new Error('Encryption key is not set');
 }
 
+/**
+ * Encrypts the given data using AES encryption with the master key.
+ * @param {Object} data - The data to be encrypted.
+ * @returns {string} - The encrypted data as a string.
+ * @throws {Error} - If encryption fails.
+ */
 export const encryptData = (data) => {
   try {
     const encrypted = CryptoJS.AES.encrypt(JSON.stringify(data), MASTER_KEY).toString();
@@ -18,6 +25,12 @@ export const encryptData = (data) => {
   }
 };
 
+/**
+ * Decrypts the given encrypted data using AES decryption with the master key.
+ * @param {string} encryptedData - The data to be decrypted.
+ * @returns {Object} - The decrypted data.
+ * @throws {Error} - If decryption fails.
+ */
 export const decryptData = (encryptedData) => {
   try {
     console.log('Encrypted Data to Decrypt:', encryptedData); // Debugging log
