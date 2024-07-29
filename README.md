@@ -91,20 +91,7 @@ npm test
 - `src/`: Main entry point for the React application.
 - `styles/`: CSS files for styling components.
 
-## Future Improvements
 
-- **Multi-Factor Authentication (MFA)**: Adding an extra layer of security during user login.
-- **Browser Extensions**: Developing browser extensions for easier access to stored passwords.
-- **Mobile Application**: Creating a mobile version of the password manager.
-- **Enhanced Analytics**: Providing users with insights into the strength of their passwords and suggestions for improvements.
-
-## License
-
-This project is licensed under the MIT License.
-
-## Acknowledgments
-
-Thanks to all contributors and open-source projects that made this project possible.
 
 ---
 
