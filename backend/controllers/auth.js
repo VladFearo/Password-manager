@@ -28,7 +28,7 @@ exports.register = async (req, res) => {
 
     await newUser.save(); // Save the new user to the database
 
-    const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, { expiresIn: '1h' }); // Generate a JWT
+    const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, { expiresIn: '24h' }); // Generate a JWT
 
     const encryptedResponse = encryptData({ token, user: newUser }); // Encrypt the response data
     res.status(201).json({ data: encryptedResponse }); // Send the response

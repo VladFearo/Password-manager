@@ -19,18 +19,19 @@ const getAuthHeader = () => {
  * @throws {Error} - If adding the password fails.
  */
 export const addPassword = async (passwordData) => {
-  const encryptedData = encryptData(passwordData); // Encrypt the password data
+  const encryptedData = encryptData(passwordData);
   try {
     const response = await axios.post(`${API_URL}/add`, { data: encryptedData }, {
-      headers: getAuthHeader(), // Include the authorization header
+      headers: getAuthHeader(),
     });
     console.log('Add Password Response:', response.data);
-    return decryptData(response.data.data); // Decrypt and return the response data
+    return decryptData(response.data.data);
   } catch (error) {
-    console.error('Error adding password:', error);
-    throw new Error('Add password failed');
+    console.error('Error adding password:', error.response || error.message);
+    throw new Error(error.response ? error.response.data.message || 'Add password failed' : 'Network error');
   }
 };
+
 
 /**
  * Get all passwords for the current user.
@@ -86,5 +87,43 @@ export const deletePassword = async (id) => {
   } catch (error) {
     console.error('Error deleting password:', error);
     throw new Error('Delete password failed');
+  }
+};
+
+/**
+ * Helper function to convert an ArrayBuffer to a hexadecimal string.
+ * @param {ArrayBuffer} buffer - The buffer to convert.
+ * @returns {string} - The hexadecimal string.
+ */
+const arrayBufferToHex = (buffer) => {
+  return [...new Uint8Array(buffer)]
+    .map(b => b.toString(16).padStart(2, '0'))
+    .join('')
+    .toUpperCase();
+};
+
+/**
+ * Check if a password has been pwned using Have I Been Pwned API.
+ * 
+ * @param {string} password - The password to check.
+ * @returns {Promise<boolean>} - Returns true if the password has been compromised, false otherwise.
+ */
+export const checkIfPasswordPwned = async (password) => {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(password);
+  const hashBuffer = await crypto.subtle.digest('SHA-1', data);
+  const hash = arrayBufferToHex(hashBuffer);
+
+  const prefix = hash.slice(0, 5); // First 5 characters of SHA-1 hash
+  const suffix = hash.slice(5);    // Remaining characters
+
+  try {
+      const response = await axios.get(`https://api.pwnedpasswords.com/range/${prefix}`);
+      const hashes = response.data.split('\n');
+      const compromised = hashes.some(h => h.split(':')[0] === suffix);
+      return compromised;  // Returns true if password is pwned
+  } catch (error) {
+      console.error('Error checking pwned password:', error);
+      return false;
   }
 };
