@@ -12,6 +12,7 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
+    "@nextui-org/react": "^2.4.8",
     "axios": "^1.7.2",
     "bootstrap": "^5.3.3",
     "crypto-js": "^4.2.0",

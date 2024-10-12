@@ -32,38 +32,53 @@ const Login = () => {
     };
 
     return (
-        <div className="container d-flex flex-column align-items-center justify-content-center min-vh-100 bg-light">
-            <div className="card p-4 shadow">
-                <h2 className="card-title text-center mb-4">Login</h2>
-                {error && <div className="alert alert-danger">{error}</div>} {/* Display error message if any */}
+
+        <div className="container vh-100 d-flex align-items-center justify-content-center">
+            <div className="card shadow p-4" style={{ maxWidth: '400px', width: '100%' }}>
+                <h2 className="text-center mb-4">Login</h2>
+                {error && (
+                    <div className="alert alert-danger" role="alert">
+                        {error}
+                    </div>
+                )}
                 <form onSubmit={handleSubmit}>
                     <div className="mb-3">
                         <label htmlFor="email" className="form-label">Email address</label>
-                        <input
-                            type="email"
-                            className="form-control"
-                            id="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                        />
+                        <div className="input-group">
+                            <input
+                                type="email"
+                                className="form-control"
+                                id="email"
+                                placeholder="Enter email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                            />
+                        </div>
                     </div>
                     <div className="mb-3">
                         <label htmlFor="password" className="form-label">Password</label>
-                        <input
-                            type="password"
-                            className="form-control"
-                            id="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                        />
+                        <div className="input-group">
+                            <input
+                                type="password"
+                                className="form-control"
+                                id="password"
+                                placeholder="Enter password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                            />
+                        </div>
                     </div>
-                    <button type="submit" className="btn btn-primary w-100">Login</button>
+                    <div className="d-grid">
+                        <button type="submit" className="btn btn-primary btn-block">Login</button>
+                    </div>
                 </form>
             </div>
         </div>
+
     );
 };
+
 
 export default Login;

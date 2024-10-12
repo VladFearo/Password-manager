@@ -9,7 +9,7 @@ import { logout, getCurrentUser } from '../services/authService';
  * @component
  */
 const Header = () => {
-    const navigate = useNavigate(); // Hook to navigate programmatically
+    const navigate = useNavigate();
     const user = getCurrentUser(); // Get the current logged-in user
 
     /**
@@ -21,33 +21,51 @@ const Header = () => {
     };
 
     return (
-        <nav className="navbar navbar-expand-lg bg-body-tertiary">
+        <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
             <div className="container-fluid">
-                <a className="navbar-brand" href="/">Password Manager</a>
+                {/* Brand name */}
+                <a className="navbar-brand fw-bold fs-3" href="/">
+                    Password Manager
+                </a>
+                {/* Navbar toggle for mobile */}
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
                 <div className="collapse navbar-collapse" id="navbarNav">
                     <ul className="navbar-nav ms-auto">
                         <li className="nav-item">
-                            <a className="nav-link active" aria-current="page" href="/">Home</a>
+                            {/* Home link */}
+                            <a className="nav-link" href="/">Home</a>
                         </li>
                         {user ? (
                             <>
                                 <li className="nav-item">
+                                    {/* Passwords link */}
                                     <a className="nav-link" href="/passwords">Passwords</a>
                                 </li>
                                 <li className="nav-item">
-                                    <button className="nav-link" onClick={handleLogout}>Logout</button>
+                                    {/* Solid button for logout */}
+                                    <button
+                                        className="btn btn-danger ms-2"
+                                        onClick={handleLogout}
+                                    >
+                                        Logout
+                                    </button>
                                 </li>
                             </>
                         ) : (
                             <>
                                 <li className="nav-item">
-                                    <a className="nav-link" href="/login">Login</a>
+                                    {/* Solid button for login */}
+                                    <a className="btn btn-primary ms-2" href="/login">
+                                        Login
+                                    </a>
                                 </li>
                                 <li className="nav-item">
-                                    <a className="nav-link" href="/register">Register</a>
+                                    {/* Solid button for register */}
+                                    <a className="btn btn-light ms-2" href="/register">
+                                        Register
+                                    </a>
                                 </li>
                             </>
                         )}

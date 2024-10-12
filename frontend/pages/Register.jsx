@@ -30,26 +30,34 @@ const Register = () => {
         try {
             await register({ name, email, password }); // Attempt to register
             setSuccess('Registration successful!'); // Set success message
+            setError(''); // Clear error
             setTimeout(() => navigate('/login'), 2000); // Redirect to login page after 2 seconds
         } catch (err) {
-            setError(err.message);
+            setError(err.message); // Set error if registration fails
+            setSuccess(''); // Clear success message
         }
     };
 
     return (
         <div className="container d-flex flex-column align-items-center justify-content-center min-vh-100 bg-light">
-            <div className="card p-4 shadow">
+            <div className="card p-4 shadow" style={{ maxWidth: '400px', width: '100%' }}>
                 <h2 className="card-title text-center mb-4">Register</h2>
-                {error && <div className="alert alert-danger">{error}</div>} {/* Display error message if any */}
-                {success && <div className="alert alert-success">{success}</div>} {/* Display success message if any */}
+
+                {/* Display error message if any */}
+                {error && <div className="alert alert-danger">{error}</div>}
+
+                {/* Display success message if any */}
+                {success && <div className="alert alert-success">{success}</div>}
+
                 <form onSubmit={handleSubmit}>
                     <div className="mb-3">
-                        <label htmlFor="name" className="form-label">Name</label>
+                        <label htmlFor="name" className="form-label">Full Name</label>
                         <input
                             type="text"
                             className="form-control"
                             id="name"
                             value={name}
+                            placeholder="Enter your full name"
                             onChange={(e) => setName(e.target.value)}
                             required
                         />
@@ -61,6 +69,7 @@ const Register = () => {
                             className="form-control"
                             id="email"
                             value={email}
+                            placeholder="Enter your email"
                             onChange={(e) => setEmail(e.target.value)}
                             required
                         />
@@ -72,6 +81,7 @@ const Register = () => {
                             className="form-control"
                             id="password"
                             value={password}
+                            placeholder="Enter your password"
                             onChange={(e) => setPassword(e.target.value)}
                             required
                         />
@@ -83,11 +93,14 @@ const Register = () => {
                             className="form-control"
                             id="confirmPassword"
                             value={confirmPassword}
+                            placeholder="Confirm your password"
                             onChange={(e) => setConfirmPassword(e.target.value)}
                             required
                         />
                     </div>
-                    <button type="submit" className="btn btn-primary w-100">Register</button>
+
+                    {/* Register button */}
+                    <button type="submit" className="btn btn-primary btn-block w-100">Register</button>
                 </form>
             </div>
         </div>
