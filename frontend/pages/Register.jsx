@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { register } from '../services/authService';
-import '../styles/Register.css';
+import PasswordStrengthBar from 'react-password-strength-bar';
 
 /**
  * Register component that provides a form for user registration.
@@ -85,6 +85,7 @@ const Register = () => {
                             onChange={(e) => setPassword(e.target.value)}
                             required
                         />
+                        <PasswordStrengthBar password={password} />
                     </div>
                     <div className="mb-3">
                         <label htmlFor="confirmPassword" className="form-label">Confirm Password</label>

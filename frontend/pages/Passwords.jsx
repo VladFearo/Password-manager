@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { addPassword, getPasswords, updatePassword, deletePassword, checkIfPasswordPwned } from '../services/passwordService';
-import '../styles/Passwords.css';
+import PasswordStrengthBar from 'react-password-strength-bar';
 
 const Passwords = () => {
     const [passwords, setPasswords] = useState([]);
@@ -146,6 +146,9 @@ const Passwords = () => {
                                 checked={showFormPassword}
                                 onChange={() => setShowFormPassword(!showFormPassword)}
                             />
+
+
+
                             <label
                                 className="form-check-label"
                                 htmlFor="togglePasswordVisibility"
@@ -154,6 +157,9 @@ const Passwords = () => {
                                 {showFormPassword ? 'Hide' : 'Show'}
                             </label>
                         </div>
+                    </div>
+                    <div className='container'>
+                        <PasswordStrengthBar password={form.password} />
                     </div>
                 </div>
 
