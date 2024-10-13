@@ -2,6 +2,7 @@ const { encryptData, decryptData } = require('../utils/encryption');
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const validatePasswordStrength = require('../utils/passwordValidator');
 
 /**
  * Register a new user.
@@ -13,12 +14,17 @@ exports.register = async (req, res) => {
   const { name, email, password } = decryptData(data); // Decrypt the incoming data
 
   try {
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return res.status(400).json({ message: 'User already exists' }); // Check if user already exists
+    // Validate password strength using zxcvbn
+    if (!validatePasswordStrength(password)) {
+      return res.status(400).json({ message: 'Password does not meet strength requirements.' });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 12); // Hash the password
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: 'User already exists' });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 12);
 
     const newUser = new User({
       name,
@@ -26,15 +32,15 @@ exports.register = async (req, res) => {
       password: hashedPassword,
     });
 
-    await newUser.save(); // Save the new user to the database
+    await newUser.save();
 
-    const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, { expiresIn: '24h' }); // Generate a JWT
+    const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, { expiresIn: '24h' });
 
-    const encryptedResponse = encryptData({ token, user: newUser }); // Encrypt the response data
-    res.status(201).json({ data: encryptedResponse }); // Send the response
+    const encryptedResponse = encryptData({ token, user: newUser });
+    res.status(201).json({ data: encryptedResponse });
   } catch (err) {
     console.error('Error during registration:', err);
-    res.status(500).json({ message: 'Server error' }); // Handle errors
+    res.status(500).json({ message: 'Server error' });
   }
 };
 
@@ -59,7 +65,7 @@ exports.login = async (req, res) => {
       return res.status(400).json({ message: 'Invalid credentials' }); // Invalid password
     }
 
-    const token = jwt.sign({ id: existingUser._id }, process.env.JWT_SECRET, { expiresIn: '1h' }); // Generate a JWT
+    const token = jwt.sign({ id: existingUser._id }, process.env.JWT_SECRET, { expiresIn: '24h' }); // Generate a JWT
 
     const encryptedResponse = encryptData({ token, user: existingUser }); // Encrypt the response data
     res.status(200).json({ data: encryptedResponse }); // Send the response
