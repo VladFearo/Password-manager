@@ -16,6 +16,7 @@ const Register = () => {
     const [error, setError] = useState(''); // State for error message
     const [success, setSuccess] = useState(''); // State for success message
     const navigate = useNavigate(); // Hook to navigate programmatically
+    const [passwordScore, setPasswordScore] = useState(0); // Track password strength score
 
     /**
      * Handle form submission for registration.
@@ -23,8 +24,14 @@ const Register = () => {
      */
     const handleSubmit = async (e) => {
         e.preventDefault();
+        // Check if passwords match
         if (password !== confirmPassword) {
             setError('Passwords do not match'); // Set error if passwords do not match
+            return;
+        }
+        // Check if password strength is strong enough
+        if (passwordScore < 3) { // If password is too weak (score < 3)
+            setError('Password is too weak. Please choose a stronger password.');
             return;
         }
         try {
@@ -85,7 +92,10 @@ const Register = () => {
                             onChange={(e) => setPassword(e.target.value)}
                             required
                         />
-                        <PasswordStrengthBar password={password} />
+                        <PasswordStrengthBar
+                            password={password}
+                            onChangeScore={setPasswordScore}
+                        />
                     </div>
                     <div className="mb-3">
                         <label htmlFor="confirmPassword" className="form-label">Confirm Password</label>
